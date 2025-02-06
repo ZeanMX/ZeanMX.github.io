@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown with Effects</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* แอนิเมชั่นข้อความ */
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        /* พื้นหลังเคลื่อนไหวแบบ Gradient */
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            background: linear-gradient(135deg, #6a82fb, #fc5c7d);
+            background-size: 400% 400%;
+            animation: gradientAnimation 10s ease infinite;
+        }
+
+        /* แสงที่วาบ */
+        .glow {
+            color: white;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.5), 0 0 30px rgba(255, 255, 255, 0.3);
+        }
+
+        /* ปุ่ม */
+        .glow-button {
+            transition: all 0.3s ease;
+        }
+
+        .glow-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.7), 0 0 25px rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center h-screen">
+
+    <div class="text-center text-white px-4 md:px-0 fade-in">
+        <h1 class="text-3xl md:text-4xl font-bold mb-4 glow">Countdown</h1>
+        <p class="text-base md:text-xl text-gray-100 mb-6 glow">อีกไม่กี่เดือนก็จะ 16 แล้วนะ</p>
+        <div id="countdown" class="text-3xl md:text-4xl font-bold bg-white text-purple-900 px-6 py-3 md:px-8 md:py-4 rounded-lg shadow-lg w-3/4 md:w-1/2 mx-auto"></div>
+        <a href="memories.html" class="mt-6 inline-block px-8 py-4 bg-yellow-500 text-white rounded-lg shadow-md glow-button hover:bg-yellow-600 transition-all duration-300 transform hover:scale-105 w-3/4 md:w-1/2 mx-auto">หน้าต่อไป</a>
+    </div>
+
+    <script>
+        // ฟังก์ชันสำหรับการตั้งเวลา countdown
+        function startCountdown() {
+            const targetDate = new Date("2025-05-04T00:00:00");
+            function updateCountdown() {
+                const now = new Date();
+                const difference = targetDate - now;
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+                document.getElementById("countdown").innerText = `${days} วัน ${hours} ชั่วโมง ${minutes} นาที ${seconds} วินาที`;
+            }
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        }
+        startCountdown();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safe Lock</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .button-effect {
+            transition: all 0.3s ease;
+        }
+        .button-effect:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        .button-effect:active {
+            transform: translateY(2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .input-style {
+            background-color: #f3f4f6;
+            border: 2px solid #d1d5db;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        .bg-gradient-custom {
+            background: linear-gradient(to bottom, #e0f7fa, #b2ebf2);
+        }
+        .gradient-button {
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease-in-out;
+        }
+        .gradient-button:hover {
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+        .gradient-button:active {
+            transform: translateY(2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gradient-custom flex items-center justify-center h-screen px-4">
+
+    <div class="text-center text-white w-full max-w-md mx-auto bg-white bg-opacity-30 p-8 rounded-xl shadow-lg backdrop-blur-lg">
+        <h1 class="text-4xl font-semibold mb-4 text-blue-600">ใส่รหัสตู้เซฟ</h1>
+        <p class="text-gray-800 mb-6">กรอกรหัส 4 หลักเพื่อไปหน้าถัดไป</p>
+        
+        <!-- แสดงรหัสและรูป -->
+        <div class="flex items-center justify-center mb-4">
+            <input type="password" id="code" maxlength="4" class="text-center text-black px-4 py-2 rounded-lg w-full sm:w-1/2 input-style" placeholder="วันเกิดเราไง" readonly>
+            <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExeXM4bzRucTM3MzlkY2FjMzFicWJlaW0xazF5M3JyZGQzMWVyY3B1eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/c76IJLufpNwSULPk77/giphy.gif" alt="Image" class="ml-4 w-20 h-20 rounded-full border-4 border-blue-200 shadow-lg">
+        </div>
+        
+        <!-- ปุ่มยืนยัน -->
+        <button onclick="checkCode()" class="w-full px-6 py-3 gradient-button text-white rounded-lg shadow-md button-effect mb-4">ปลดล็อค</button>
+        
+        <!-- ข้อความผิดพลาด -->
+        <p id="error" class="text-red-500 mt-2 hidden">อองนึกดีๆสิ</p>
+
+        <!-- กล่องสำหรับแสดงปุ่ม -->
+        <div class="grid grid-cols-3 gap-4 mx-auto mb-4">
+            <button class="bg-blue-100 text-black p-4 rounded-lg text-2xl button-effect" onclick="appendDigit('1')">1</button>
+            <button class="bg-blue-100 text-black p-4 rounded-lg text-2xl button-effect" onclick="appendDigit('2')">2</button>
+            <button class="bg-blue-100 text-black p-4 rounded-lg text-2xl button-effect" onclick="appendDigit('3')">3</button>
+            <button class="bg-blue-100 text-black p-4 rounded-lg text-2xl button-effect" onclick="appendDigit('4')">4</button>
+            <button class="bg-blue-100 text-black p-4 rounded-lg text-2xl button-effect" onclick="appendDigit('5')">5</button>
+            <button class="bg-blue-100 text-black p-4 rounded-lg text-2xl button-effect" onclick="appendDigit('6')">6</button>
+            <button class="bg-blue-100 text-black p-4 rounded-lg text-2xl button-effect" onclick="appendDigit('7')">7</button>
+            <button class="bg-blue-100 text-black p-4 rounded-lg text-2xl button-effect" onclick="appendDigit('8')">8</button>
+            <button class="bg-blue-100 text-black p-4 rounded-lg text-2xl button-effect" onclick="appendDigit('9')">9</button>
+            <button class="bg-blue-100 text-black p-4 rounded-lg text-2xl button-effect" onclick="appendDigit('0')">0</button>
+            <button class="bg-red-600 text-white p-4 rounded-lg text-2xl col-span-3 button-effect" onclick="clearCode()">ล้าง</button>
+        </div>
+    </div>
+
+    <script>
+        function appendDigit(digit) {
+            const codeField = document.getElementById('code');
+            if (codeField.value.length < 4) {
+                codeField.value += digit;
+            }
+        }
+
+        function clearCode() {
+            document.getElementById('code').value = '';
+        }
+
+        function checkCode() {
+            const code = document.getElementById('code').value;
+            if (code === "0405") {
+                window.location.href = "countdown.html";
+            } else {
+                document.getElementById('error').classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
