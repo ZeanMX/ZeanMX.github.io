@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Countdown with Effects</title>
+    <title>Heart Effect</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         /* แอนิเมชั่นข้อความ */
@@ -11,7 +11,7 @@
             0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
         }
-        
+
         .fade-in {
             animation: fadeIn 1.5s ease-in-out;
         }
@@ -24,10 +24,17 @@
         }
 
         body {
-            background: linear-gradient(135deg, #6a82fb, #fc5c7d);
-            background-size: 400% 400%;
-            animation: gradientAnimation 10s ease infinite;
-        }
+    background-color: black; /* เปลี่ยนเป็นสีดำ */
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    position: relative;
+}
+
 
         /* แสงที่วาบ */
         .glow {
@@ -44,34 +51,250 @@
             transform: scale(1.1);
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.7), 0 0 25px rgba(255, 255, 255, 0.5);
         }
+
+        /* จัดตำแหน่งและสไตล์ของปุ่ม */
+        .button-container {
+            position: absolute;
+            bottom: 30px;
+            z-index: 10;
+            text-align: center;
+        }
+
+        .content-container {
+            z-index: 5;
+            text-align: center;
+        }
     </style>
 </head>
-<body class="flex items-center justify-center h-screen">
+<body>
 
-    <div class="text-center text-white px-4 md:px-0 fade-in">
-        <h1 class="text-3xl md:text-4xl font-bold mb-4 glow">Countdown</h1>
-        <p class="text-base md:text-xl text-gray-100 mb-6 glow">อีกไม่กี่เดือนก็จะ 16 แล้วนะ</p>
-        <div id="countdown" class="text-3xl md:text-4xl font-bold bg-white text-purple-900 px-6 py-3 md:px-8 md:py-4 rounded-lg shadow-lg w-3/4 md:w-1/2 mx-auto"></div>
-        <a href="memories.html" class="mt-6 inline-block px-8 py-4 bg-yellow-500 text-white rounded-lg shadow-md glow-button hover:bg-yellow-600 transition-all duration-300 transform hover:scale-105 w-3/4 md:w-1/2 mx-auto">หน้าต่อไป</a>
+    <div class="content-container fade-in">
+        <h1 class="text-3xl md:text-4xl font-bold mb-4 glow">Valentine</h1>
+        <p class="text-base md:text-xl text-gray-100 mb-6 glow">💖</p>
+    </div>
+
+    <div class="button-container">
+        <a href="memories.html" class="mt-6 inline-block px-8 py-4 bg-yellow-500 text-white rounded-lg shadow-md glow-button hover:bg-yellow-600 transition-all duration-300 transform hover:scale-105">
+            หน้าต่อไป
+        </a>
     </div>
 
     <script>
-        // ฟังก์ชันสำหรับการตั้งเวลา countdown
-        function startCountdown() {
-            const targetDate = new Date("2025-05-04T00:00:00");
-            function updateCountdown() {
-                const now = new Date();
-                const difference = targetDate - now;
-                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-                document.getElementById("countdown").innerText = `${days} วัน ${hours} ชั่วโมง ${minutes} นาที ${seconds} วินาที`;
+        class Tool {
+            static randomNumber(min, max) {
+                return Math.floor(Math.random() * (max - min + 1) + min);
             }
-            updateCountdown();
-            setInterval(updateCountdown, 1000);
+
+            static randomColorRGB() {
+                return `rgb(${this.randomNumber(0, 255)}, ${this.randomNumber(0, 255)}, ${this.randomNumber(0, 255)})`;
+            }
+
+            static randomColorHSL(hue, saturation, lightness) {
+                return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+            }
+
+            static gradientColor(ctx, cr, cg, cb, ca, x, y, r) {
+                const col = `${cr},${cg},${cb}`;
+                const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+                g.addColorStop(0, `rgba(${col}, ${ca * 1})`);
+                g.addColorStop(0.5, `rgba(${col}, ${ca * 0.5})`);
+                g.addColorStop(1, `rgba(${col}, ${ca * 0})`);
+                return g;
+            }
         }
-        startCountdown();
+
+        class Angle {
+            constructor(a) {
+                this.a = a;
+                this.rad = (this.a * Math.PI) / 180;
+            }
+
+            incDec(num) {
+                this.a += num;
+                this.rad = (this.a * Math.PI) / 180;
+            }
+        }
+
+        let canvas;
+        let offCanvas;
+
+        class Canvas {
+            constructor(bool) {
+                this.canvas = document.createElement("canvas");
+                if (bool === true) {
+                    this.canvas.style.position = "absolute";
+                    this.canvas.style.display = "block";
+                    this.canvas.style.top = 0;
+                    this.canvas.style.left = 0;
+                    document.body.appendChild(this.canvas);
+                }
+                this.ctx = this.canvas.getContext("2d");
+                this.width = this.canvas.width = window.innerWidth;
+                this.height = this.canvas.height = window.innerHeight;
+                this.width < 768 ? (this.heartSize = 180) : (this.heartSize = 250);
+                this.mouseX = null;
+                this.mouseY = null;
+                this.hearts = [];
+                this.offHeartNum = 1;
+                this.offHearts = [];
+                this.data = null;
+            }
+
+            onInit() {
+                let index = 0;
+                for (let i = 0; i < this.height; i += 12) {
+                    for (let j = 0; j < this.width; j += 12) {
+                        let oI = (j + i * this.width) * 4 + 3;
+                        if (this.data[oI] > 0) {
+                            index++;
+                            const h = new Heart(canvas.ctx, j + Tool.randomNumber(-3, 3), i + Tool.randomNumber(-3, 3), Tool.randomNumber(6, 12), index);
+                            canvas.hearts.push(h);
+                        }
+                    }
+                }
+            }
+
+            offInit() {
+                for (let i = 0; i < this.offHeartNum; i++) {
+                    const s = new Heart(this.ctx, this.width / 2, this.height / 2.3, this.heartSize);
+                    this.offHearts.push(s);
+                }
+                for (let i = 0; i < this.offHearts.length; i++) {
+                    this.offHearts[i].offRender(i);
+                }
+                this.data = this.ctx.getImageData(0, 0, this.width, this.height).data;
+                this.onInit();
+            }
+
+            render() {
+                this.ctx.clearRect(0, 0, this.width, this.height);
+                for (let i = 0; i < this.hearts.length; i++) {
+                    this.hearts[i].render(i);
+                }
+            }
+
+            resize() {
+                this.offHearts = [];
+                this.hearts = [];
+                this.width = this.canvas.width = window.innerWidth;
+                this.height = this.canvas.height = window.innerHeight;
+                this.width < 768 ? (this.heartSize = 180) : (this.heartSize = 250);
+            }
+        }
+
+        class Heart {
+            constructor(ctx, x, y, r, i) {
+                this.ctx = ctx;
+                this.init(x, y, r, i);
+            }
+
+            init(x, y, r, i) {
+                this.x = x;
+                this.xi = x;
+                this.y = y;
+                this.yi = y;
+                this.r = r;
+                this.i = i * 0.5 + 200;
+                this.l = this.i;
+                this.c = Tool.randomColorHSL(Tool.randomNumber(-5, 5), 80, 60);
+                this.a = new Angle(Tool.randomNumber(0, 360));
+                this.v = {
+                    x: Math.random(),
+                    y: -Math.random(),
+                };
+                this.ga = Math.random();
+            }
+
+            draw() {
+                const ctx = this.ctx;
+                ctx.save();
+                ctx.globalCompositeOperation = "lighter";
+                ctx.globalAlpha = this.ga;
+                ctx.beginPath();
+                ctx.fillStyle = this.c;
+                ctx.moveTo(this.x, this.y + this.r);
+                ctx.bezierCurveTo(
+                    this.x - this.r - this.r / 5,
+                    this.y + this.r / 1.5,
+                    this.x - this.r,
+                    this.y - this.r,
+                    this.x,
+                    this.y - this.r / 5
+                );
+                ctx.bezierCurveTo(
+                    this.x + this.r,
+                    this.y - this.r,
+                    this.x + this.r + this.r / 5,
+                    this.y + this.r / 1.5,
+                    this.x,
+                    this.y + this.r
+                );
+                ctx.closePath();
+                ctx.fill();
+                ctx.restore();
+            }
+
+            updateParams() {
+                this.a.incDec(1);
+                Math.sin(this.a.rad) < 0 ? (this.r = -Math.sin(this.a.rad) * 20) : (this.r = Math.sin(this.a.rad) * 20);
+            }
+
+            updatePosition() {
+                this.l -= 1;
+                if (this.l < 0) {
+                    this.v.y -= 0.01;
+                    this.v.x += 0.02;
+                    this.y += this.v.y;
+                    this.x += this.v.x;
+                }
+            }
+
+            wrapPosition() {
+                if (this.x > canvas.width * 1.5) {
+                    this.init(this.xi, this.yi, Tool.randomNumber(6, 12), this.i);
+                }
+            }
+
+            render() {
+                this.wrapPosition();
+                this.updateParams();
+                this.updatePosition();
+                this.draw();
+            }
+
+            offRender(i) {
+                this.draw();
+            }
+        }
+
+        (function () {
+            "use strict";
+            window.addEventListener("load", function () {
+                offCanvas = new Canvas(false);
+                canvas = new Canvas(true);
+
+                offCanvas.offInit();
+
+                function render() {
+                    window.requestAnimationFrame(function () {
+                        canvas.render();
+                        render();
+                    });
+                }
+
+                render();
+
+                window.addEventListener(
+                    "resize",
+                    function () {
+                        canvas.resize();
+                        offCanvas.resize();
+                        offCanvas.offInit();
+                    },
+                    false
+                );
+            });
+        })();
     </script>
 
 </body>
