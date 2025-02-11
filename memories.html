@@ -14,45 +14,64 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
+        /* Swiper customization */
         .swiper-container {
             width: 100%;
-            max-width: 350px;
+            max-width: 400px;
             height: auto;
             overflow: hidden;
+            border-radius: 12px;
         }
 
         .swiper-slide img {
             width: 100%;
             height: auto;
             border-radius: 12px;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
         }
 
-        /* เพิ่มพื้นหลังและกรอบโปร่งแสง */
+        /* Text container styling */
         .text-container {
-            background: rgba(255, 255, 255, 0.85); /* พื้นหลังโปร่งแสงที่ไม่แสบตา */
+            background: rgba(255, 255, 255, 0.85);
             border-radius: 12px;
             padding: 1rem;
             border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease-in-out;
         }
 
+        .text-container:hover {
+            transform: scale(1.02);
+        }
+
+        /* Next button styling */
         .next-button {
             transition: all 0.3s ease;
         }
 
         .next-button:hover {
             transform: scale(1.05);
-            background-color: #6c8e7e; /* สีฟ้าอ่อน */
+            background-color: #4a90e2; /* Light blue for hover */
         }
 
-        /* เพิ่มการจัดวางที่สวยงาม */
         .swiper-pagination {
             position: absolute;
             bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
         }
+
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            .swiper-container {
+                max-width: 90%;
+            }
+
+            .next-button {
+                width: 100%;
+            }
+        }
+
     </style>
 </head>
 <body class="bg-gradient-to-b from-pink-300 to-pink-100 flex items-center justify-center min-h-screen font-roboto px-6">
@@ -60,7 +79,7 @@
     <div class="text-center text-white px-4 py-8 w-full max-w-2xl mx-auto bg-white bg-opacity-20 rounded-xl shadow-2xl backdrop-blur-lg">
 
         <!-- Swiper Container -->
-        <div class="swiper-container swiper mx-auto">
+        <div class="swiper-container swiper mx-auto mb-8">
             <div class="swiper-wrapper">
                 <div class="swiper-slide">
                     <img src="image1.jpg" alt="Memory">
@@ -84,26 +103,26 @@
                     <img src="image8.jpg" alt="Memory">
                 </div>
             </div>
-            <!-- จุดบอกตำแหน่ง -->
+            <!-- Pagination -->
             <div class="swiper-pagination"></div>
         </div>
-        
-        <!-- ข้อความ -->
+
+        <!-- Text Container -->
         <div class="mt-8 text-container mx-auto max-w-3xl">
             <p id="memoryText" class="text-lg text-gray-900">
-                ขอให้ valentine's นี่มีความสุขมากนะคั้บบบ
+                Valentine day na kub pom eiei
             </p>
         </div>
-        
-        <!-- Spotify iframe -->
+
+        <!-- Spotify Embed -->
         <div class="mt-8 flex justify-center">
-            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/7vpB1jFZPn5a04hrUMUB1K?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/4jTPIeovVlcLvb7HXO04V5?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </div>
-        
-        <!-- ปุ่ม Next -->
+
+        <!-- Next Button -->
         <a href="maxpang.html" class="mt-8 inline-block px-8 py-3 bg-blue-400 text-white text-lg font-semibold rounded-lg shadow-md next-button hover:bg-blue-500">
             หน้าต่อไป →
-        </a>        
+        </a>
     </div>
 
     <script>
