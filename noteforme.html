@@ -51,21 +51,22 @@
       <button id="openBtn" class="px-6 py-2 text-white bg-red-400 rounded-full text-lg transition duration-300 hover:bg-pink-300">Open Envelope</button>
       <button id="closeBtn" class="px-6 py-2 text-white bg-red-400 rounded-full text-lg transition duration-300 hover:bg-pink-300 ml-4">Close Envelope</button>
     </div>
+    
     <!-- Next Page Button -->
     <div class="mt-4">
-  <a href="maxpang.html">
-    <button class="px-6 py-2 text-white bg-green-400 rounded-full text-lg transition duration-300 hover:bg-green-300">
-      Go to Next Page
-    </button>
-  </a>
-</div>
+      <a href="maxpang.html">
+        <button class="px-6 py-2 text-white bg-green-400 rounded-full text-lg transition duration-300 hover:bg-green-300">
+          Go to Next Page
+        </button>
+      </a>
+    </div>
+  </div>
 
   <script>
     const flap = document.querySelector('.flap');
     const letter = document.querySelector('.letter');
     const openBtn = document.getElementById('openBtn');
     const closeBtn = document.getElementById('closeBtn');
-    const nextPageBtn = document.getElementById('nextPageBtn');
 
     openBtn.addEventListener('click', () => {
       flap.style.transform = 'rotateX(180deg)';
@@ -75,11 +76,6 @@
     closeBtn.addEventListener('click', () => {
       flap.style.transform = 'rotateX(0)';
       letter.style.transform = 'translateY(100%)';
-    });
-
-    // Go to the next page
-    nextPageBtn.addEventListener('click', () => {
-      window.location.href = 'nextpage.html'; // Change to the next page URL
     });
   </script>
 </body>
